@@ -1,13 +1,13 @@
 /**
  * Download all Flowdock messages from the URL, then calls done node-js style.
  */
-function downloadFlowDockMessages(baseUrl, done) {
+function downloadFlowDockMessages(baseUrl, authorizationHeader, done) {
   var messages = [];
   function downloadMoreMessages(sinceId, cb) {
     $.ajax({
       url: baseUrl + "&since_id=" + sinceId + "&sort=asc",
       headers: {
-        "Authorization": "Basic " + flowdockCredentials
+        "Authorization": authorizationHeader
       },
       type: "GET",
       crossDomain: true,
@@ -24,7 +24,7 @@ function downloadFlowDockMessages(baseUrl, done) {
         else {
           alert("Unable to load flow messages. More details can be found in the developer console.");
         }
-        console.warn("FAILURE to laod Flowdock messages:", xhr);
+        console.warn("FAILURE to load Flowdock messages:", xhr);
         cb(new Error("Unable to load"));
       }
     });
