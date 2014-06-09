@@ -1,6 +1,6 @@
 $(function() {
 
-	$('#button-start').click(function() {
+	$('#credentials-form').submit(function() {
 		$('#credentials').hide();
 		$('#loader').show();
 
@@ -26,7 +26,9 @@ $(function() {
 
 			$('#loader').hide();
 			$('#charts').show();
-			$('#title').text("anyFetch stats");
+			$('#title').text($('#organization').val() + '/' + $('#flowname').val() + " stats");
 		});
+
+		return false;
 	});
 });
