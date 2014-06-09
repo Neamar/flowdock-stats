@@ -1,3 +1,13 @@
+/**
+ * Python backport
+ */
+Object.values = function(obj) {
+  return Object.keys(obj).map(function (key) {
+    return obj[key];
+  });
+};
+
+
 var chartsDefinition = {
   'event-pie-chart': {
     chartType: 'Pie',
@@ -26,8 +36,16 @@ var chartsDefinition = {
   },
   'user-pie-chart': {
     chartType: 'Pie',
+    chartOptions: {
+      animateRotate : false,
+    },
     chartData: function(messages) {
       var acc = messages.reduce(function(acc, m) {
+        // Skip "0" user
+        if(m.user === 0) {
+          return acc;
+        }
+
         if(!acc[m.user]) {
           acc[m.user] = {
             value: 0,

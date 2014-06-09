@@ -9,34 +9,47 @@
 
   <title>Flowdock stats</title>
 
-  <!-- <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,800" rel="stylesheet" type="text/css">
-  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
 
- -->  <!--[if lt IE 9]>
+  <!--[if lt IE 9]>
   <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->
 </head>
 
 <body>
-  <h2>Pie Chart</h2>
-  <div style="text-align:center">
-    <canvas id="event-pie-chart" width="500" height="500"></canvas>
-  </div>
-  <div style="text-align:center">
-    <canvas id="user-pie-chart" width="500" height="500"></canvas>
+<div class="container" style="margin-top:25px">
+  <div id="loader">
+    <div class="progress progress-striped active">
+      <div class="progress-bar" role="progressbar" style="width: 100%">
+        <span><span id="messages-count">0</span> messages</span>
+      </div>
+    </div>
   </div>
 
-  <h2>History</h2>
-  <canvas id="event-line-chart" width="800" height="400"></canvas>
+  <div id="charts" style="display:none">
+    <h1 id="title"></h1>
 
+    <h2>Pie Chart</h2>
+    <h3>Event types</h3>
+    <div style="text-align:center">
+      <canvas id="event-pie-chart" width="300" height="300"></canvas>
+    </div>
+    <h3>User actions</h3>
+    <div style="text-align:center">
+      <canvas id="user-pie-chart" width="300" height="300"></canvas>
+    </div>
+
+    <h2>History</h2>
+    <canvas id="event-line-chart" width="800" height="400"></canvas>
+  </div>
 
   <script src="/js/chart.min.js"></script>
   <script src="/js/jquery.min.js"></script>
   <script src="/js/credentials.js"></script>
+  <script src="/js/messages.js"></script>
   <script src="/js/charts.js"></script>
   <script src="/js/index.js"></script>
-  <!-- <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script> -->
+</div>
 </body>
 
 </html>
