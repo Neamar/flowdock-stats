@@ -36,90 +36,19 @@ $(function() {
 
 		messages = messages.concat(newMessages);
 
-		/// Graph time!
-		buildEventPieChart(messages);
-		buildEventLineChart(messages);
+		// Graphing time!
+		Object.keys(chartsDefinition).forEach(function(chartName) {
+			var options = chartsDefinition[chartName];
+			var data = options.chartData(messages);
+			var chartOptions = options.chartOptions || {};
+			var ctx = document.getElementById(chartName).getContext("2d");
+			new Chart(ctx)[options.chartType](data, chartOptions);
+		});
 	});
 });
 
 
 
-
-
-
-function buildEventPieChart(messages) {
-	var getData = function() {
-		var acc = messages.reduce(function(acc, m) {
-			if(!acc[m.event]) {
-				acc[m.event] = {
-					value: 0,
-					label: m.event,
-					color: 'black',
-					labelColor: 'white'
-				};
-			}
-
-			acc[m.event].value += 1;
-
-			return acc;
-		}, {});
-
-
-		return Object.values(acc);
-	};
-
-	var ctx = document.getElementById("event-pie-chart").getContext("2d");
-	var chartOptions = {
-		animateRotate : false,
-	};
-	new Chart(ctx).Pie(getData(), chartOptions);
-}
-
-function buildEventLineChart(messages) {
-	var getData = function() {
-		var acc = messages.reduce(function(acc, m) {
-			var date = m.sent.getFullYear() + "-" + m.sent.getMonth() + "-" + m.sent.getDate();
-			if(!acc[date]) {
-				acc[date] = {
-					value: 0,
-					date: date,
-					timestamp: m.sent.getTime()
-				};
-			}
-
-			acc[date].value += 1;
-
-			return acc;
-		}, {});
-
-		// var data = {
-		// 	labels : ["January","February","March","April","May","June","July"],
-		// 	datasets : [
-		// 		{
-		// 			fillColor : "rgba(151,187,205,0.5)",
-		// 			strokeColor : "rgba(151,187,205,1)",
-		// 			pointColor : "rgba(151,187,205,1)",
-		// 			pointStrokeColor : "#fff",
-		// 			data : [28,48,40,19,96,27,100]
-		// 		}
-		// 	]
-		// };
-		// return data;
-
-		console.log(acc);
-		acc = Object.values(acc);
-		acc.sort(function(a, b) {
-			return a.timestamp > b.timestamp;
-		});
-
-		return acc;
-	};
-
-	var ctx = document.getElementById("event-line-chart").getContext("2d");
-	var chartOptions = {
-	};
-	new Chart(ctx).Line(getData(), chartOptions);
-}
 
 
 /**
