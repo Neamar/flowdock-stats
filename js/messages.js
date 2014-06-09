@@ -1,6 +1,7 @@
-var baseUrl = "https://api.flowdock.com/flows/boostinlyon/anyfetch/messages?limit=100";
-
-function downloadFlowDockMessages(done) {
+/**
+ * Download all Flowdock messages from the URL, then calls done node-js style.
+ */
+function downloadFlowDockMessages(baseUrl, done) {
   var messages = [];
   function downloadMoreMessages(sinceId, cb) {
     $.ajax({
@@ -14,8 +15,17 @@ function downloadFlowDockMessages(done) {
         cb(null, r);
       },
       error: function(xhr) {
+        if(xhr.status === 401) {
+          alert("Unauthorized. Please check your credentials, then retry.");
+        }
+        else if(xhr.status === 404) {
+          alert("This flow does not exist. Check your organization, flow name and verify you have access to the flow.");
+        }
+        else {
+          alert("Unable to load flow messages. More details can be found in the developer console.");
+        }
+        console.warn("FAILURE to laod Flowdock messages:", xhr);
         cb(new Error("Unable to load"));
-        console.warn("FAILURE", xhr);
       }
     });
   }
@@ -58,5 +68,4 @@ function downloadFlowDockMessages(done) {
 
 
   downloadMoreMessages(0, withMessages);
-
 }
