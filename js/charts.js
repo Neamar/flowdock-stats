@@ -12,7 +12,7 @@ var chartsDefinition = {
   'event-pie-chart': {
     chartType: 'Pie',
     chartOptions: {
-      animateRotate : false,
+      animation : false,
     },
     chartData: function(messages) {
       var acc = messages.reduce(function(acc, m) {
@@ -20,8 +20,8 @@ var chartsDefinition = {
           acc[m.event] = {
             value: 0,
             label: m.event,
-            color: 'black',
-            labelColor: 'white'
+            color: "#97BBCD",
+            labelColor: 'black'
           };
         }
 
@@ -37,12 +37,12 @@ var chartsDefinition = {
   'user-pie-chart': {
     chartType: 'Pie',
     chartOptions: {
-      animateRotate : false,
+      animation : false,
     },
     chartData: function(messages) {
       var acc = messages.reduce(function(acc, m) {
         // Skip "0" user
-        if(m.user === 0) {
+        if(m.user === "0") {
           return acc;
         }
 
@@ -50,8 +50,8 @@ var chartsDefinition = {
           acc[m.user] = {
             value: 0,
             label: m.user,
-            color: 'black',
-            labelColor: 'white'
+            color: "#97BBCD",
+            labelColor: 'black'
           };
         }
 
@@ -89,6 +89,51 @@ var chartsDefinition = {
 
       var labels = acc.map(function(m) {
         return m.date;
+      });
+      var values = acc.map(function(m) {
+        return m.value;
+      });
+
+      var data = {
+          labels: labels,
+          datasets: [
+            {
+              fillColor : "rgba(151,187,205,0.5)",
+              strokeColor : "rgba(151,187,205,1)",
+              pointColor : "rgba(151,187,205,1)",
+              pointStrokeColor : "#fff",
+              data : values
+            }
+          ]
+      };
+
+      return data;
+    }
+  },
+  'hour-line-chart': {
+    chartType: 'Bar',
+    chartData: function(messages) {
+      var acc = messages.reduce(function(acc, m) {
+        var hour = m.sent.getHours();
+        if(!acc[hour]) {
+          acc[hour] = {
+            value: 0,
+            hour: hour,
+          };
+        }
+
+        acc[hour].value += 1;
+
+        return acc;
+      }, {});
+
+      acc = Object.values(acc);
+      acc.sort(function(a, b) {
+        return a.hour > b.hour;
+      });
+
+      var labels = acc.map(function(m) {
+        return m.hour;
       });
       var values = acc.map(function(m) {
         return m.value;

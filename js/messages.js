@@ -47,7 +47,9 @@ function downloadFlowDockMessages(done) {
     $('#messages-count').text(messages.length);
 
     // Again !
-    return done(null, messages);
+    if(messages.length > 300) {
+      return done(null, messages);
+    }
 
     setTimeout(function() {
       downloadMoreMessages(lastId, withMessages);

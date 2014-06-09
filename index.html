@@ -26,21 +26,31 @@
     </div>
   </div>
 
-  <div id="charts" style="display:none">
+  <div id="charts" style="display:none; text-align:center">
     <h1 id="title"></h1>
 
     <h2>Pie Chart</h2>
-    <h3>Event types</h3>
-    <div style="text-align:center">
-      <canvas id="event-pie-chart" width="300" height="300"></canvas>
-    </div>
-    <h3>User actions</h3>
-    <div style="text-align:center">
-      <canvas id="user-pie-chart" width="300" height="300"></canvas>
+
+    <div class="row">
+      <div class="col-md-6">
+        <h3>Event types</h3>
+        <div style="text-align:center">
+          <canvas id="event-pie-chart" width="250" height="250"></canvas>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <h3>User actions</h3>
+        <div style="text-align:center">
+          <canvas id="user-pie-chart" width="250" height="250"></canvas>
+        </div>
+      </div>
     </div>
 
     <h2>History</h2>
-    <canvas id="event-line-chart" width="800" height="400"></canvas>
+    <h3>By time</h3>
+    <canvas id="event-line-chart" width="970" height="400"></canvas>
+    <h3>By hour</h3>
+    <canvas id="hour-line-chart" width="970" height="400"></canvas>
   </div>
 
   <script src="/js/chart.min.js"></script>
