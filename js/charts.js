@@ -154,5 +154,51 @@ var chartsDefinition = {
 
       return data;
     }
+  },
+  'day-line-chart': {
+    chartType: 'Bar',
+    chartData: function(messages) {
+      var acc = messages.reduce(function(acc, m) {
+        var day = m.sent.getDay();
+        if(!acc[day]) {
+          acc[day] = {
+            value: 0,
+            day: day,
+          };
+        }
+
+        acc[day].value += 1;
+
+        return acc;
+      }, {});
+
+      acc = Object.values(acc);
+      acc.sort(function(a, b) {
+        return a.day > b.day;
+      });
+
+      var labels = acc.map(function(m) {
+        return ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][m.day];
+      });
+
+      var values = acc.map(function(m) {
+        return m.value;
+      });
+
+      var data = {
+          labels: labels,
+          datasets: [
+            {
+              fillColor : "rgba(151,187,205,0.5)",
+              strokeColor : "rgba(151,187,205,1)",
+              pointColor : "rgba(151,187,205,1)",
+              pointStrokeColor : "#fff",
+              data : values
+            }
+          ]
+      };
+
+      return data;
+    }
   }
 };
