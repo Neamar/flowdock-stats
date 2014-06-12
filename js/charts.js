@@ -200,5 +200,104 @@ var chartsDefinition = {
 
       return data;
     }
-  }
+  },
+  'acc-event-line-chart': {
+    chartType: 'Line',
+    chartOptions: {
+       pointDot : false,
+    },
+    chartData: function(messages) {
+      // List most commons events
+      var eventTypes = messages.reduce(function(eventTypes, m) {
+        if(!eventTypes[m.event]) {
+          eventTypes[m.event] = 0;
+        }
+        eventTypes[m.event] += 1;
+
+        return eventTypes;
+      }, {});
+
+      // Select the 3 most important
+      var sortedEventTypes = [];
+      for (var event in eventTypes) {
+        sortedEventTypes.push({event: event, total: eventTypes[event]});
+      }
+      sortedEventTypes.sort(function(a, b) {
+        return b.total - a.total;
+      });
+
+      eventTypes = sortedEventTypes.slice(0, 3).map(function(a) {
+        return a.event;
+      });
+
+      // Retrieve all messages of selected events type, clustered by date
+      var eventByDates = messages.reduce(function(eventByDates, m) {
+        if(eventTypes.indexOf(m.event) === -1) {
+          // Non used event, discard message
+          return eventByDates;
+        }
+
+        var date = m.sent.getFullYear() + "-" + m.sent.getMonth() + "-" + m.sent.getDate();
+        if(!eventByDates[date]) {
+          eventByDates[date] = {
+            __date: date
+          };
+          eventTypes.forEach(function(event) {
+            eventByDates[date][event] = 0;
+          });
+        }
+        eventByDates[date][m.event] += 1;
+
+        return eventByDates;
+      }, {});
+
+      eventByDates = Object.values(eventByDates);
+      eventByDates.sort(function(a, b) {
+        return a.__date > b.__date;
+      });
+
+      var labels = eventByDates.map(function(day) {
+        return day.__date;
+      });
+
+      var colors = [
+        "191,187,205",
+        "187,205,191",
+        "205,187,191",
+        // "205,191,187",
+        // "191,205,187",
+      ];
+
+      var datasets = {};
+      eventTypes.forEach(function(event, i) {
+        datasets[event] = {
+          fillColor : "rgba(" + colors[i] + ",0.5)",
+          strokeColor : "rgba(" + colors[i] + ",1)",
+          data : []
+        };
+      });
+
+      datasets = eventByDates.reduce(function(datasets, day) {
+        delete day.__date;
+        for(var event in day) {
+          datasets[event].data.push(day[event]);
+        }
+
+        return datasets;
+      }, datasets);
+
+      var data = {
+          labels: labels,
+          datasets: Object.values(datasets)
+      };
+
+      // Add some legends
+      var legend = eventTypes.map(function(event, i) {
+        return "<span style='background-color:rgb(" + colors[i] + ")'>&nbsp;&nbsp;</span> " + event + '<br />';
+      }).join("\n");
+      $('#acc-event-line-legend').html(legend);
+
+      return data;
+    }
+  },
 };
