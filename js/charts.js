@@ -251,6 +251,15 @@ var chartsDefinition = {
         return eventByDates;
       }, {});
 
+      // We need to accumulate values :\
+      for(var date in eventByDates) {
+        var prev = 0;
+        eventTypes.forEach(function(event) {
+          eventByDates[date][event] = eventByDates[date][event] + prev;
+          prev = prev + eventByDates[date][event];
+        });
+      }
+
       eventByDates = Object.values(eventByDates);
       eventByDates.sort(function(a, b) {
         return a.__date > b.__date;
