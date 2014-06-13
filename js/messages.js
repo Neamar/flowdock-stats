@@ -19,7 +19,7 @@ function downloadFlowDockMessages(baseUrl, authorizationHeader, done) {
           alert("Unauthorized. Please check your credentials, then retry.");
         }
         else if(xhr.status === 404) {
-          alert("This flow does not exist. Check your organization, flow name and verify you have access to the flow.");
+          alert("This flow does not exist. Check your organization, flow name and verify you have access to the flow. Note flow names are case sensitive");
         }
         else {
           alert("Unable to load flow messages. More details can be found in the developer console.");
