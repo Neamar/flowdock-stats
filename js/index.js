@@ -4,7 +4,7 @@ $(function() {
 		$('#credentials').hide();
 		$('#loader').show();
 
-		var authorizationHeader = "Basic " + btoa($('#user').val() + ':' + $('#password').val());
+		var authorizationHeader = "Basic " + btoa($('#token').val() + ':flowdock-stats');
 		var baseUrl = "https://api.flowdock.com/flows/" + $('#organization').val() + '/' + $('#flowname').val() + '/messages?limit=100';
 
 		downloadFlowDockMessages(baseUrl, authorizationHeader, function(err, messages) {
