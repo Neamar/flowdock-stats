@@ -7,6 +7,35 @@ Object.values = function(obj) {
   });
 };
 
+Date.prototype.getWeek = function() {
+  // Copy date so don't modify original
+  d = new Date(+this);
+  d.setHours(0,0,0);
+  // Set to nearest Thursday: current date + 4 - current day number
+  // Make Sunday's day number 7
+  d.setDate(d.getDate() + 4 - (d.getDay()||7));
+  // Get first day of year
+  var yearStart = new Date(d.getFullYear(),0,1);
+  // Calculate full weeks to nearest Thursday
+  var weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1) / 7);
+  // Return array of year and week number
+  return [d.getFullYear(), weekNo];
+};
+
+function getWeekNumber(d) {
+  // Copy date so don't modify original
+  d = new Date(+d);
+  d.setHours(0,0,0);
+  // Set to nearest Thursday: current date + 4 - current day number
+  // Make Sunday's day number 7
+  d.setDate(d.getDate() + 4 - (d.getDay()||7));
+  // Get first day of year
+  var yearStart = new Date(d.getFullYear(),0,1);
+  // Calculate full weeks to nearest Thursday
+  var weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1) / 7);
+  // Return array of year and week number
+  return [d.getFullYear(), weekNo];
+}
 
 var chartsDefinition = {
   'event-pie-chart': {
@@ -64,11 +93,57 @@ var chartsDefinition = {
       return Object.values(acc);
     }
   },
-  'event-line-chart': {
+  'day-line-chart': {
     chartType: 'Line',
     chartData: function(messages) {
       var acc = messages.reduce(function(acc, m) {
         var date = m.sent.getFullYear() + "-" + m.sent.getMonth() + "-" + m.sent.getDate();
+        if(!acc[date]) {
+          acc[date] = {
+            value: 0,
+            date: date,
+            timestamp: m.sent.getTime()
+          };
+        }
+
+        acc[date].value += 1;
+
+        return acc;
+      }, {});
+
+      acc = Object.values(acc);
+      acc.sort(function(a, b) {
+        return a.timestamp > b.timestamp;
+      });
+
+      var labels = acc.map(function(m) {
+        return m.date;
+      });
+      var values = acc.map(function(m) {
+        return m.value;
+      });
+
+      var data = {
+          labels: labels,
+          datasets: [
+            {
+              fillColor : "rgba(151,187,205,0.5)",
+              strokeColor : "rgba(151,187,205,1)",
+              pointColor : "rgba(151,187,205,1)",
+              pointStrokeColor : "#fff",
+              data : values
+            }
+          ]
+      };
+
+      return data;
+    }
+  },
+  'week-line-chart': {
+    chartType: 'Line',
+    chartData: function(messages) {
+      var acc = messages.reduce(function(acc, m) {
+        var date = m.sent.getWeek();
         if(!acc[date]) {
           acc[date] = {
             value: 0,
@@ -155,7 +230,7 @@ var chartsDefinition = {
       return data;
     }
   },
-  'day-line-chart': {
+  'dayofweek-line-chart': {
     chartType: 'Bar',
     chartData: function(messages) {
       var acc = messages.reduce(function(acc, m) {
