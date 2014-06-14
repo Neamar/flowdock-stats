@@ -26,7 +26,9 @@ $(function() {
 
 			$('#loader').hide();
 			$('#charts').show();
-			$('#title').text($('#organization').val() + '/' + $('#flowname').val() + " stats");
+			$('#title').text($('#flow').val() + " stats");
+
+			messages = null;
 		});
 
 		return false;
