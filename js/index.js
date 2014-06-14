@@ -1,11 +1,30 @@
 $(function() {
+	var authorizationHeader;
 
 	$('#credentials-form').submit(function() {
+		authorizationHeader = "Basic " + btoa($('#token').val() + ":flowdock-stats");
+		downloadFlowDockFlows(authorizationHeader, function(err, flows) {
+			if(err) {
+				$('#credentials').show();
+				$('#flows').hide();
+
+				return;
+			}
+
+			console.log(flows);
+		});
+
 		$('#credentials').hide();
+		$('#flows').show();
+
+		return false;
+	});
+
+	$('#flows-form').submit(function() {
+		$('#flows').hide();
 		$('#loader').show();
 
-		var authorizationHeader = "Basic " + btoa($('#user').val() + ':' + $('#password').val());
-		var baseUrl = "https://api.flowdock.com/flows/" + $('#organization').val() + '/' + $('#flowname').val() + '/messages?limit=100';
+		var baseUrl = "https://api.flowdock.com/flows/" + $('#flow').val() + '/messages?limit=100';
 
 		downloadFlowDockMessages(baseUrl, authorizationHeader, function(err, messages) {
 			if(err) {
