@@ -2,7 +2,7 @@
  * Python backport
  */
 Object.values = function(obj) {
-  return Object.keys(obj).map(function (key) {
+  return Object.keys(obj).map(function(key) {
     return obj[key];
   });
 };
@@ -10,14 +10,14 @@ Object.values = function(obj) {
 Date.prototype.getWeek = function() {
   // Copy date so don't modify original
   d = new Date(+this);
-  d.setHours(0,0,0);
+  d.setHours(0, 0, 0);
   // Set to nearest Thursday: current date + 4 - current day number
   // Make Sunday's day number 7
-  d.setDate(d.getDate() + 4 - (d.getDay()||7));
+  d.setDate(d.getDate() + 4 - (d.getDay() || 7));
   // Get first day of year
-  var yearStart = new Date(d.getFullYear(),0,1);
+  var yearStart = new Date(d.getFullYear(), 0, 1);
   // Calculate full weeks to nearest Thursday
-  var weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1) / 7);
+  var weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
   // Return array of year and week number
   return [d.getFullYear(), weekNo];
 };
@@ -25,14 +25,14 @@ Date.prototype.getWeek = function() {
 function getWeekNumber(d) {
   // Copy date so don't modify original
   d = new Date(+d);
-  d.setHours(0,0,0);
+  d.setHours(0, 0, 0);
   // Set to nearest Thursday: current date + 4 - current day number
   // Make Sunday's day number 7
-  d.setDate(d.getDate() + 4 - (d.getDay()||7));
+  d.setDate(d.getDate() + 4 - (d.getDay() || 7));
   // Get first day of year
-  var yearStart = new Date(d.getFullYear(),0,1);
+  var yearStart = new Date(d.getFullYear(), 0, 1);
   // Calculate full weeks to nearest Thursday
-  var weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1) / 7);
+  var weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
   // Return array of year and week number
   return [d.getFullYear(), weekNo];
 }
@@ -41,7 +41,7 @@ var chartsDefinition = {
   'event-pie-chart': {
     chartType: 'Pie',
     chartOptions: {
-      animation : false,
+      animation: false,
     },
     chartData: function(messages) {
       var acc = messages.reduce(function(acc, m) {
@@ -66,7 +66,7 @@ var chartsDefinition = {
   'user-pie-chart': {
     chartType: 'Pie',
     chartOptions: {
-      animation : false,
+      animation: false,
     },
     chartData: function(messages) {
       var acc = messages.reduce(function(acc, m) {
@@ -127,11 +127,11 @@ var chartsDefinition = {
           labels: labels,
           datasets: [
             {
-              fillColor : "rgba(151,187,205,0.5)",
-              strokeColor : "rgba(151,187,205,1)",
-              pointColor : "rgba(151,187,205,1)",
-              pointStrokeColor : "#fff",
-              data : values
+              fillColor: "rgba(151,187,205,0.5)",
+              strokeColor: "rgba(151,187,205,1)",
+              pointColor: "rgba(151,187,205,1)",
+              pointStrokeColor: "#fff",
+              data: values
             }
           ]
       };
@@ -173,11 +173,11 @@ var chartsDefinition = {
           labels: labels,
           datasets: [
             {
-              fillColor : "rgba(151,187,205,0.5)",
-              strokeColor : "rgba(151,187,205,1)",
-              pointColor : "rgba(151,187,205,1)",
-              pointStrokeColor : "#fff",
-              data : values
+              fillColor: "rgba(151,187,205,0.5)",
+              strokeColor: "rgba(151,187,205,1)",
+              pointColor: "rgba(151,187,205,1)",
+              pointStrokeColor: "#fff",
+              data: values
             }
           ]
       };
@@ -218,11 +218,11 @@ var chartsDefinition = {
           labels: labels,
           datasets: [
             {
-              fillColor : "rgba(151,187,205,0.5)",
-              strokeColor : "rgba(151,187,205,1)",
-              pointColor : "rgba(151,187,205,1)",
-              pointStrokeColor : "#fff",
-              data : values
+              fillColor: "rgba(151,187,205,0.5)",
+              strokeColor: "rgba(151,187,205,1)",
+              pointColor: "rgba(151,187,205,1)",
+              pointStrokeColor: "#fff",
+              data: values
             }
           ]
       };
@@ -264,11 +264,11 @@ var chartsDefinition = {
           labels: labels,
           datasets: [
             {
-              fillColor : "rgba(151,187,205,0.5)",
-              strokeColor : "rgba(151,187,205,1)",
-              pointColor : "rgba(151,187,205,1)",
-              pointStrokeColor : "#fff",
-              data : values
+              fillColor: "rgba(151,187,205,0.5)",
+              strokeColor: "rgba(151,187,205,1)",
+              pointColor: "rgba(151,187,205,1)",
+              pointStrokeColor: "#fff",
+              data: values
             }
           ]
       };
