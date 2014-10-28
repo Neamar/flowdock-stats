@@ -1,7 +1,7 @@
 /**
  * Download all Flowdock messages from the URL, then calls done node-js style.
  */
-function downloadFlowDockMessages(baseUrl, authorizationHeader, done) {
+function downloadFlowDockMessages(baseUrl, authorizationHeader, messageCount, done) {
   var messages = [];
   function downloadMoreMessages(sinceId, cb) {
     $.ajax({
@@ -56,6 +56,8 @@ function downloadFlowDockMessages(baseUrl, authorizationHeader, done) {
     // Update counter
     $('#messages-count').text(messages.length);
 
+    $('.progress-bar').width(Math.min(5, Math.round(100 * lastId / messageCount)) + '%');
+
     // Again !
     // if(messages.length > 300) {
     //   return done(null, messages);
@@ -68,4 +70,33 @@ function downloadFlowDockMessages(baseUrl, authorizationHeader, done) {
 
 
   downloadMoreMessages(0, withMessages);
+}
+
+
+// Return the number of messages in the flow
+function getMessagesCount(baseUrl, authorizationHeader, done) {
+  $.ajax({
+    url: baseUrl + "?limit=1",
+    headers: {
+      "Authorization": authorizationHeader
+    },
+    type: "GET",
+    crossDomain: true,
+    success: function(r) {
+      done(null, r[0].id);
+    },
+    error: function(xhr) {
+      if(xhr.status === 401) {
+        alert("Unauthorized. Please check your credentials, then retry.");
+      }
+      else if(xhr.status === 404) {
+        alert("This flow does not exist. Check your organization, flow name and verify you have access to the flow. Note flow names are case sensitive");
+      }
+      else {
+        alert("Unable to load flow messages. More details can be found in the developer console.");
+      }
+      console.warn("FAILURE to load Flowdock messages:", xhr);
+      done(new Error("Unable to load"));
+    }
+  });
 }

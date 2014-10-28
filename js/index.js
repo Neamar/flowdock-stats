@@ -24,30 +24,34 @@ $(function() {
     $('#flows').hide();
     $('#loader').show();
 
-    var baseUrl = "https://api.flowdock.com/flows/" + $('#flow').val() + '/messages?limit=100';
+    var messageUrl = "https://api.flowdock.com/flows/" + $('#flow').val() + '/messages';
 
-    downloadFlowDockMessages(baseUrl, authorizationHeader, function(err, messages) {
-      if(err) {
-        $('#credentials').show();
+    getMessagesCount(messageUrl, authorizationHeader, function(err, messageCount) {
+      var baseUrl = messageUrl + '?limit=100';
+
+      downloadFlowDockMessages(baseUrl, authorizationHeader, messageCount, function(err, messages) {
+        if(err) {
+          $('#credentials').show();
+          $('#loader').hide();
+
+          return;
+        }
+
+        // Graphing time!
+        Object.keys(chartsDefinition).forEach(function(chartName) {
+          var options = chartsDefinition[chartName];
+          var data = options.chartData(messages);
+          var chartOptions = options.chartOptions || {};
+          var ctx = document.getElementById(chartName).getContext("2d");
+          new Chart(ctx)[options.chartType](data, chartOptions);
+        });
+
         $('#loader').hide();
+        $('#charts').show();
+        $('#title').text($('#flow').val() + " stats");
 
-        return;
-      }
-
-      // Graphing time!
-      Object.keys(chartsDefinition).forEach(function(chartName) {
-        var options = chartsDefinition[chartName];
-        var data = options.chartData(messages);
-        var chartOptions = options.chartOptions || {};
-        var ctx = document.getElementById(chartName).getContext("2d");
-        new Chart(ctx)[options.chartType](data, chartOptions);
+        messages = null;
       });
-
-      $('#loader').hide();
-      $('#charts').show();
-      $('#title').text($('#flow').val() + " stats");
-
-      messages = null;
     });
 
     return false;

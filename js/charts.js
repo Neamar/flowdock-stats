@@ -189,7 +189,7 @@ var chartsDefinition = {
     chartType: 'Line',
     chartData: function(messages) {
       var acc = messages.reduce(function(acc, m) {
-        if(m.event !== "message" && m.event === "comment") {
+        if(m.event !== "message" && m.event !== "comment") {
           return acc;
         }
 
@@ -284,7 +284,7 @@ var chartsDefinition = {
     chartType: 'Bar',
     chartData: function(messages) {
       var acc = messages.reduce(function(acc, m) {
-        if(m.event !== "message" && m.event === "comment") {
+        if(m.event !== "message" && m.event !== "comment") {
           return acc;
         }
 
