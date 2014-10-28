@@ -56,7 +56,7 @@ function downloadFlowDockMessages(baseUrl, authorizationHeader, messageCount, do
     // Update counter
     $('#messages-count').text(messages.length);
 
-    $('.progress-bar').width(Math.min(5, Math.round(100 * lastId / messageCount)) + '%');
+    $('.progress-bar').width(Math.max(5, Math.round(100 * lastId / messageCount)) + '%');
 
     // Again !
     // if(messages.length > 300) {

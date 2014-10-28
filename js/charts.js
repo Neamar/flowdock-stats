@@ -6,6 +6,8 @@ Object.values = function(obj) {
     return obj[key];
   });
 };
+var wtf;
+
 
 Date.prototype.getWeek = function() {
   // Copy date so don't modify original
@@ -254,8 +256,9 @@ var chartsDefinition = {
 
       acc = Object.values(acc);
       acc.sort(function(a, b) {
-        return a.hour > b.hour;
+        return a.hour - b.hour;
       });
+      wtf = acc;
 
       var labels = acc.map(function(m) {
         return m.hour;
@@ -302,10 +305,10 @@ var chartsDefinition = {
       }, {});
 
       acc = Object.values(acc);
-      acc.sort(function(a, b) {
-        return a.hour > b.hour;
-      });
 
+      acc.sort(function(a, b) {
+        return a.hour - b.hour;
+      });
       var labels = acc.map(function(m) {
         return m.hour;
       });
